@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json()); // add this line
 
 const port = process.env.APP_PORT ?? 5000;
-
+const { hashPassword } = require("./auth.js");
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
 };
@@ -26,7 +26,7 @@ app.get("/api/users", usersHandlers.getUsers);
 app.get("/api/users/:id", usersHandlers.getUsersById);
 
 app.post("/api/movies", validateMovie, movieHandlers.postMovie);
-app.post("/api/users",  validateUsers, usersHandlers.postUsers);
+app.post("/api/users", hashPassword, validateUsers, usersHandlers.postUsers);
 
 app.put("/api/movies/:id", validateMovie, movieHandlers.updateMovie);
 app.put("/api/users/:id",  validateUsers, usersHandlers.updateUsers);
